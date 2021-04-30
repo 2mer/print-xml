@@ -1,44 +1,145 @@
-import * as React from 'react'
+import React from 'react'
 
 import { renderToString } from 'react-dom/server'
 
+
+//#region disable useLayoutEffect warnings by using useEffect instead
+const CONTROL = {
+	disableUseLayoutEffect: false
+}
+{
+	// used to disable useLayoutEffect warnings, super hacky but does the job.
+	// might be weird if multiple renders happen in parallel which shouldnt be happening anyways?
+	const oldUseLayoutEffect = React.useLayoutEffect
+
+	Object.defineProperty(React, 'useLayoutEffect', {
+		get: () => (f: any, deps: any) => (CONTROL.disableUseLayoutEffect ? React.useEffect : oldUseLayoutEffect)(f, deps)
+	})
+}
+//#endregion
+
 interface JsxToDataUriOptions {
 	element: JSX.Element
-	width?: string
-	height?: string
+	width?: number
+	height?: number
+	style?: (() => string) | string
 }
 
-export default function jsxToDataUri(style: string, options: JsxToDataUriOptions) {
+export function jsxToString(el: JSX.Element) {
+	return renderToString(el)
+		.replace(/"/g, "'")
+		.replace(/#/g, '%23')
+		.replace(/\n/g, '')
+		.replace(/  /g, '')
+		.replace(/\t/g, '')
+		.replace(/ data-reactroot=''/g, '')
+}
+
+export default function jsxToDataUri(options: JsxToDataUriOptions) {
+
+	const { style: css } = options
+
+
+	// render elements
+	CONTROL.disableUseLayoutEffect = true
+	const element = jsxToString(options.element)
+	CONTROL.disableUseLayoutEffect = false
+
+	// render styles
+	const styles = css ? (
+		typeof css === 'function' ? (
+			jsxToString(<style id="jss-server-side">{css()}</style>)
+		) :
+			jsxToString(<style id="jss-server-side">{css}</style>)
+	) : ''
+
+	const renderString = styles + element
 
 	return svgDataUri(
-		renderToString(<>
-			{style && <style>{style}</style>}
-			{options.element}
-		</>)
-			.replace(/"/g, "'")
-			.replace(/#/g, '%23')
-			.replace(/\n/g, '')
-			.replace(/  /g, '')
-			.replace(/\t/g, '')
-			.replace(/ data-reactroot=''/g, ''),
+		renderString,
 		options.width,
 		options.height,
 	)
 
 }
 
-export function svgDataUri(str: string, width: string = '100', height: string = '100') {
+export function svgDataUri(str: string, width = 100, height = 100) {
 	return `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='${width}' height='${height}'>${str}</svg>")`
 }
 
-export function svg(strs: TemplateStringsArray, ...rest: any[]) {
-	let [ret, rstrs] = strs
-	rest.forEach((r, index) => {
-		ret += r
-		ret += rstrs[index]
-	});
+export function svg(options: JsxToDataUriOptions) {
+	return jsxToDataUri(options)
+}
 
-	const style = ret
+export function html(options: JsxToDataUriOptions) {
 
-	return (options: JsxToDataUriOptions) => jsxToDataUri(style, options)
+	const {
+		width = 100,
+		height = 100,
+		style,
+		element
+	} = options
+
+	const nOptions: JsxToDataUriOptions = {
+		style,
+		width,
+		height,
+		element: (
+			<svg>
+				<foreignObject width={width} height={height} >
+					{/* @ts-ignore */}
+					<body xmlns="http://www.w3.org/1999/xhtml" style={{ padding: 0, margin: 0 }}>
+						{element}
+					</body>
+				</foreignObject>
+			</svg>
+		)
+	}
+
+	return jsxToDataUri(nOptions)
+}
+
+// export function html(strs: TemplateStringsArray, ...rest: any[]) {
+// 	const f = svg(strs, ...rest)
+
+// 	return (options: JsxToDataUriOptions) => {
+
+// 		const {
+// 			width = '100',
+// 			height = '100',
+// 			element
+// 		} = options
+
+// 		const nOptions: JsxToDataUriOptions = {
+// 			width,
+// 			height,
+// 			element: (
+// 				<foreignObject width={width} height={height} >
+// 					{/* @ts-ignore */}
+// 					<body xmlns="http://www.w3.org/1999/xhtml" style={{ padding: 0, margin: 0 }}>
+// 						{element}
+// 					</body>
+// 				</foreignObject>
+// 			)
+// 		}
+
+// 		return f(nOptions)
+// 	}
+// }
+
+// export function printSvg(dataUri: string, width = 100, height = 100) {
+// 	console.log('%c ', `padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${dataUri}`)
+// }
+
+const metaF = (f: Function) => (options: JsxToDataUriOptions) => {
+	const {
+		width = 100,
+		height = 100,
+	} = options
+	console.log('%c ', `padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${f(options)}`)
+}
+
+export const printXML = {
+	svg: metaF(svg),
+	html: metaF(html),
 }
