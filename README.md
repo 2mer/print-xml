@@ -6,7 +6,11 @@
 <br />
 
 
-<a href="https://codesandbox.io/s/printxml-demo-w8ozv?file=/src/App.js"><img src="https://img.shields.io/badge/Live%20Demo-CodeSandbox-lightgrey" /></a>
+<p style="text-align: center">
+	<a href="https://codesandbox.io/s/printxml-demo-w8ozv?file=/src/App.js">
+		<img src="https://img.shields.io/badge/Live%20Demo-CodeSandbox-lightgrey" style="transform: scale(2)"/>
+	</a>
+</p>
 
 <br />
 <br />
