@@ -1,5 +1,10 @@
 # print-xml
 ## A tool used to create `DataURI` out of `React` nodes - And even render them to the `devtools console`!
+Using the css `background-image` attribute, one can render complete svg heirarchies inside css with the use of svg data uri. this library abstracts the annoying process of creating svg data uri, and even lets you do also render html components (using svg `foreignObject`).
+<br />Utilizing tools for serverside rendering, this library transforms React nodes into plaintext, and escapes characters that would cause trouble to data uri
+<br />
+<br />
+note: most javascript (if not all) will be ignored when rendering an svg/html node into a background image, and because it is an image elements inside will not be interactable (they are a part of the image roster not real elements!)
 
 <br />
 <br />
