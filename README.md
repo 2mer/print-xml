@@ -7,9 +7,9 @@
 
 
 <p align="center">
-	<a href="https://codesandbox.io/s/printxml-demo-w8ozv?file=/src/App.js">
-		<img src="https://img.shields.io/badge/CodeSandbox-Live%20Demo-lightgrey?style=for-the-badge&logo=CodeSandBox" style="transform: scale(2)"/>
-	</a>
+  <a href="https://codesandbox.io/s/printxml-demo-w8ozv?file=/src/App.js">
+    <img src="https://img.shields.io/badge/CodeSandbox-Live%20Demo-lightgrey?style=for-the-badge&logo=CodeSandBox" style="transform: scale(2)"/>
+  </a>
 </p>
 
 <br />
@@ -36,17 +36,17 @@ custom svg background:
 import { svg } from 'print-xml'
 
 const StyledDiv = () => (
-	<div
-		style={{
-			width: '100px',
-			height: '100px',
-			background: svg({
-				width: 50,
-				height: 50,
-				element: <circle fill="red" cx="50%" cy="50%" r="50%"/>
-			})
-		}}
-	/>
+  <div
+    style={{
+      width: '100px',
+      height: '100px',
+      background: svg({
+        width: 50,
+        height: 50,
+        element: <circle fill="red" cx="50%" cy="50%" r="50%"/>
+      })
+    }}
+  />
 )
 ```
 custom html background:
@@ -54,25 +54,25 @@ custom html background:
 import { html } from 'print-xml'
 
 const StyledDiv = () => (
-	<div
-		style={{
-			width: '100px',
-			height: '100px',
-			background: html({
-				width: 50,
-				height: 50,
-				element: (
-					<div
-						style={{
-							borderRadius: '50%',
-							width: '100%',
-							height: '100%'
-						}}
-					/>
-				)
-			})
-		}}
-	/>
+  <div
+    style={{
+      width: '100px',
+      height: '100px',
+      background: html({
+        width: 50,
+        height: 50,
+        element: (
+          <div
+            style={{
+              borderRadius: '50%',
+              width: '100%',
+              height: '100%'
+            }}
+          />
+        )
+      })
+    }}
+  />
 )
 ```
 Alternatively using styles:
@@ -80,44 +80,44 @@ Alternatively using styles:
 import { html, svg } from 'print-xml'
 
 const StyledDivSVG = () => (
-	<div
-		style={{
-			width: '100px',
-			height: '100px',
-			background: html({
-				width: 50,
-				height: 50,
-				style: `
-				.abc {
-					fill: red;
-				}
-				`,
-				element: <circle cx="50%" cy="50%" r="50%" className="abc"/>
-			})
-		}}
-	/>
+  <div
+    style={{
+      width: '100px',
+      height: '100px',
+      background: html({
+        width: 50,
+        height: 50,
+        style: `
+        .abc {
+          fill: red;
+        }
+        `,
+        element: <circle cx="50%" cy="50%" r="50%" className="abc"/>
+      })
+    }}
+  />
 )
 
 const StyledDivHTML = () => (
-	<div
-		style={{
-			width: '100px',
-			height: '100px',
-			background: html({
-				width: 50,
-				height: 50,
-				style: `
-				.abc {
-					background: red;
-					border-radius: 50%;
-					width: 100%;
-					height: 100%;
-				}
-				`,
-				element: <div className="abc"/>
-			})
-		}}
-	/>
+  <div
+    style={{
+      width: '100px',
+      height: '100px',
+      background: html({
+        width: 50,
+        height: 50,
+        style: `
+        .abc {
+          background: red;
+          border-radius: 50%;
+          width: 100%;
+          height: 100%;
+        }
+        `,
+        element: <div className="abc"/>
+      })
+    }}
+  />
 )
 ```
 Material UI example:
@@ -135,24 +135,24 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 const sheets = new ServerStyleSheets();
 
 const StyledDivMUI = () => (
-	<div
-		style={{
-			width: '100px',
-			height: '100px',
-			background: html({
-				width: 100,
-				height: 100,
-				style: () => sheets.toString(),
-				element: sheets.collect(
-					<Paper>
-						<Box p="1rem">
-							<Button variant="contained">hello</Button>
-						</Box>
-					</Paper>
-				)
-			})
-		}}
-	/>
+  <div
+    style={{
+      width: '100px',
+      height: '100px',
+      background: html({
+        width: 100,
+        height: 100,
+        style: () => sheets.toString(),
+        element: sheets.collect(
+          <Paper>
+            <Box p="1rem">
+              <Button variant="contained">hello</Button>
+            </Box>
+          </Paper>
+        )
+      })
+    }}
+  />
 )
 ```
 
@@ -173,31 +173,31 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 const sheets = new ServerStyleSheets();
 
 printXML.html({
-	width: 100,
-	height: 100,
-	style: () => sheets.toString(),
-	element: sheets.collect(
-		<Paper>
-			<Box p="1rem">
-				<Button variant="contained">hello</Button>
-			</Box>
-		</Paper>
-	)
+  width: 100,
+  height: 100,
+  style: () => sheets.toString(),
+  element: sheets.collect(
+    <Paper>
+      <Box p="1rem">
+        <Button variant="contained">hello</Button>
+      </Box>
+    </Paper>
+  )
 })
 
 printXML.svg({
-	width: 100,
-	height: 100,
-	style: `
-	@keyframes rotate {
-		to { transform: rotate(360deg); }
-	}
+  width: 100,
+  height: 100,
+  style: `
+  @keyframes rotate {
+    to { transform: rotate(360deg); }
+  }
 
-	.rot {
-		fill: red;
-		animation: 1s rotate infinite linear;
-	}
-	`,
-	element: <rect width="100%" height="100%" className="rot"/>
+  .rot {
+    fill: red;
+    animation: 1s rotate infinite linear;
+  }
+  `,
+  element: <rect width="100%" height="100%" className="rot"/>
 })
 ```
