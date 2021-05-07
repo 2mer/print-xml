@@ -96,40 +96,9 @@ export function html(options: JsxToDataUriOptions) {
 		)
 	}
 
-	return jsxToDataUri(nOptions)
+	return jsxToDataUri(nOptions).replace(/<svg(?! xmlns)/g, '<svg xmlns=\'http://www.w3.org/2000/svg\'')
 }
 
-// export function html(strs: TemplateStringsArray, ...rest: any[]) {
-// 	const f = svg(strs, ...rest)
-
-// 	return (options: JsxToDataUriOptions) => {
-
-// 		const {
-// 			width = '100',
-// 			height = '100',
-// 			element
-// 		} = options
-
-// 		const nOptions: JsxToDataUriOptions = {
-// 			width,
-// 			height,
-// 			element: (
-// 				<foreignObject width={width} height={height} >
-// 					{/* @ts-ignore */}
-// 					<body xmlns="http://www.w3.org/1999/xhtml" style={{ padding: 0, margin: 0 }}>
-// 						{element}
-// 					</body>
-// 				</foreignObject>
-// 			)
-// 		}
-
-// 		return f(nOptions)
-// 	}
-// }
-
-// export function printSvg(dataUri: string, width = 100, height = 100) {
-// 	console.log('%c ', `padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${dataUri}`)
-// }
 
 const metaF = (f: Function) => (options: JsxToDataUriOptions) => {
 	const {
