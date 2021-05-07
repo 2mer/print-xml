@@ -22,7 +22,7 @@ interface JsxToDataUriOptions {
 	element: JSX.Element
 	width?: number
 	height?: number
-	style?: (() => string) | string
+	style?: (() => string | JSX.Element) | string
 }
 
 export function jsxToString(el: JSX.Element) {
@@ -46,12 +46,26 @@ export default function jsxToDataUri(options: JsxToDataUriOptions) {
 	CONTROL.disableUseLayoutEffect = false
 
 	// render styles
-	const styles = css ? (
-		typeof css === 'function' ? (
-			jsxToString(<style id="jss-server-side">{css()}</style>)
-		) :
-			jsxToString(<style id="jss-server-side">{css}</style>)
-	) : ''
+	// const styles = css ? (
+	// 	typeof css === 'function' ? (
+	// 		jsxToString(<style id="jss-server-side">{css()}</style>)
+	// 	) :
+	// 		jsxToString(<style id="jss-server-side">{css}</style>)
+	// ) : ''
+
+	let styles = ''
+
+	if (typeof css === 'function') {
+		const ret = css()
+
+		if (React.isValidElement(ret)) {
+			styles = jsxToString(ret)
+		} else {
+			styles = jsxToString(<style id="jss-server-side">{ret}</style>)
+		}
+	} else {
+		styles = jsxToString(<style id="jss-server-side">{css}</style>)
+	}
 
 	const renderString = styles + element
 
