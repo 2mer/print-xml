@@ -102,7 +102,7 @@ export function html(options: JsxToDataUriOptions) {
 			<svg>
 				<foreignObject width={width} height={height} >
 					{/* @ts-ignore */}
-					<body xmlns="http://www.w3.org/1999/xhtml" style={{ padding: 0, margin: 0 }}>
+					<body xmlns="http://www.w3.org/1999/xhtml" style={{ padding: 0, margin: 0, height: '100%' }}>
 						{element}
 					</body>
 				</foreignObject>
