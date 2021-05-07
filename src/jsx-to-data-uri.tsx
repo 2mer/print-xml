@@ -100,12 +100,13 @@ export function html(options: JsxToDataUriOptions) {
 }
 
 
-const metaF = (f: Function) => (options: JsxToDataUriOptions) => {
+const metaF = (f: Function) => (options: JsxToDataUriOptions & { consoleStyle?: string }) => {
 	const {
 		width = 100,
 		height = 100,
+		consoleStyle = '',
 	} = options
-	console.log('%c ', `padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${f(options)}`)
+	console.log('%c ', `${consoleStyle}; padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${f(options)}`)
 }
 
 const metaFDebug = (f: Function) => (options: JsxToDataUriOptions) => {
