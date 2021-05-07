@@ -99,14 +99,29 @@ export function html(options: JsxToDataUriOptions) {
 	return jsxToDataUri(nOptions).replace(/<svg(?! xmlns)/g, '<svg xmlns=\'http://www.w3.org/2000/svg\'')
 }
 
+interface PrintOptions {
+	consoleStyle?: string
+	horizontalAlign?: "left" | "center" | "right"
+	verticalAlign?: "top" | "center" | "bottom"
+}
 
-const metaF = (f: Function) => (options: JsxToDataUriOptions & { consoleStyle?: string }) => {
+const getPaddingFromAlign = (width: number, height: number, hAlign: string, vAlign: string) => {
+
+	const retUtil = (currentVal: string, mainVal: string, size: number) => currentVal === mainVal ? size : (currentVal === 'center' ? (size / 2) : 0)
+
+	return `${retUtil(vAlign, 'top', height)}px ${retUtil(hAlign, 'right', width)}px ${retUtil(vAlign, 'bottom', height)}px ${retUtil(hAlign, 'left', width)}px`;
+}
+
+const metaF = (f: Function) => (options: JsxToDataUriOptions & PrintOptions) => {
 	const {
 		width = 100,
 		height = 100,
 		consoleStyle = '',
+		horizontalAlign = 'center',
+		verticalAlign = 'center',
 	} = options
-	console.log('%c ', `${consoleStyle}; padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${f(options)}`)
+	// console.log('%c ', `${consoleStyle}; padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${f(options)}`)
+	console.log('%c ', `${consoleStyle}; padding: ${getPaddingFromAlign(width, height, horizontalAlign, verticalAlign)}; font-size: 0px; background: ${f(options)}`)
 }
 
 const metaFDebug = (f: Function) => (options: JsxToDataUriOptions) => {
