@@ -139,7 +139,25 @@ const metaF = (f: Function) => (options: JsxToDataUriOptions) => {
 	console.log('%c ', `padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${f(options)}`)
 }
 
+const metaFDebug = (f: Function) => (options: JsxToDataUriOptions) => {
+	const str = f(options).replace(/^url\("/gm, '').replace(/"\)$/gm, '')
+	const iframe = "<iframe width='100%' height='100%' src=\"" + str + "\" frameBorder='0'></iframe>"
+	const x = window.open() as any;
+	if (x) {
+		x.document.open();
+		x.document.write(iframe);
+		x.document.title = "Debug XML"
+		x.document.body.style = "padding: 0; margin: 0;"
+		x.document.close();
+	}
+}
+
 export const printXML = {
 	svg: metaF(svg),
 	html: metaF(html),
+}
+
+export const debug = {
+	svg: metaFDebug(svg),
+	html: metaFDebug(html),
 }

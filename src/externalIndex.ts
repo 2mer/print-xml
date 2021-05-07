@@ -1,5 +1,5 @@
-import { printXML, html, svg } from "./jsx-to-data-uri";
+import { printXML, html, svg, debug } from "./jsx-to-data-uri";
 
 export default printXML
 
-export { html, svg }
+export { html, svg, debug }

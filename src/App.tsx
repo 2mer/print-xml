@@ -1,7 +1,7 @@
 import React from 'react'
 
 // this needs to be imported before any components get imported
-import { printXML, svg, html } from './jsx-to-data-uri'
+import { printXML, svg, html, debug } from './jsx-to-data-uri'
 
 
 import { Avatar, Box, Button, List, ListItem, ListItemAvatar, ListItemText, Paper } from '@material-ui/core'
@@ -46,6 +46,22 @@ const StyledDivMUI = () => (
 export default function App() {
 
 	printXML.svg({
+		width: 100,
+		height: 100,
+		style: `
+		@keyframes rotate {
+			to { transform: rotate(360deg); }
+		}
+	
+		.rot {
+			fill: red;
+			animation: 1s rotate infinite linear;
+		}
+		`,
+		element: <rect width="50%" height="50%" className="rot" />
+	})
+
+	debug.svg({
 		width: 100,
 		height: 100,
 		style: `
