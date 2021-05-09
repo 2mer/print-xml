@@ -115,6 +115,8 @@ export function html(options: JsxToDataUriOptions) {
 
 interface PrintOptions {
 	consoleStyle?: string
+	horizontalOverflow?: "left" | "center" | "right"
+	verticalOverflow?: "top" | "center" | "bottom"
 	horizontalAlign?: "left" | "center" | "right"
 	verticalAlign?: "top" | "center" | "bottom"
 	fullLine?: boolean
@@ -132,15 +134,17 @@ const metaF = (f: Function) => (options: JsxToDataUriOptions & PrintOptions) => 
 		width = 100,
 		height = 100,
 		consoleStyle = '',
+		horizontalOverflow = 'center',
+		verticalOverflow = 'center',
 		horizontalAlign = 'center',
 		verticalAlign = 'center',
 		fullLine = false,
 	} = options
 	// console.log('%c ', `${consoleStyle}; padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${f(options)}`)
 	if (fullLine) {
-		console.log(`%c${' '.repeat(250)}`, `${consoleStyle}; padding: ${getPaddingFromAlign(0, height, horizontalAlign, verticalAlign)}; line-height: 0; background: ${f(options)}; background-size: contain; background-position: ${horizontalAlign} ${verticalAlign}; background-repeat: no-repeat;`)
+		console.log(`%c${' '.repeat(250)}`, `${consoleStyle}; padding: ${getPaddingFromAlign(0, height, horizontalOverflow, verticalOverflow)}; line-height: 0; background: ${f(options)}; background-size: contain; background-position: ${horizontalAlign} ${verticalAlign}; background-repeat: no-repeat;`)
 	} else {
-		console.log('%c ', `${consoleStyle}; padding: ${getPaddingFromAlign(width, height, horizontalAlign, verticalAlign)}; font-size: 0px; background: ${f(options)}`)
+		console.log('%c ', `${consoleStyle}; padding: ${getPaddingFromAlign(width, height, horizontalOverflow, verticalOverflow)}; font-size: 0px; background: ${f(options)}`)
 	}
 }
 

@@ -4,9 +4,9 @@
 	"private": false,
 	"main": "dist/index.js",
 	"types": "dist/externalIndex.d.ts",
-	"version": "1.0.21",
+	"version": "1.0.22",
 	"scripts": {
-		"prepack": "yarn build:prod",
+		"prepare": "yarn build:prod",
 		"start": "yarn webpack serve --config webpack.config.development.js",
 		"build:dev": "rm -rf dist && yarn webpack --config webpack.config.development.js",
 		"build:prod": "rm -rf dist && yarn webpack --config webpack.config.production.js"
