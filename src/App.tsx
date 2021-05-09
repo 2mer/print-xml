@@ -46,19 +46,21 @@ const StyledDivMUI = () => (
 export default function App() {
 
 	printXML.svg({
-		width: 100,
-		height: 100,
+		width: 400,
+		height: 400,
+		fullLine: true,
 		style: `
 		@keyframes rotate {
 			to { transform: rotate(360deg); }
 		}
 	
 		.rot {
+			transform-origin: 50%;
 			fill: red;
 			animation: 1s rotate infinite linear;
 		}
 		`,
-		element: <rect width="50%" height="50%" className="rot" />
+		element: <rect width="100%" height="100%" className="rot" />
 	})
 
 	debug.svg({

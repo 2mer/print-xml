@@ -117,6 +117,7 @@ interface PrintOptions {
 	consoleStyle?: string
 	horizontalAlign?: "left" | "center" | "right"
 	verticalAlign?: "top" | "center" | "bottom"
+	fullLine?: boolean
 }
 
 const getPaddingFromAlign = (width: number, height: number, hAlign: string, vAlign: string) => {
@@ -133,9 +134,14 @@ const metaF = (f: Function) => (options: JsxToDataUriOptions & PrintOptions) => 
 		consoleStyle = '',
 		horizontalAlign = 'center',
 		verticalAlign = 'center',
+		fullLine = false,
 	} = options
 	// console.log('%c ', `${consoleStyle}; padding: ${height / 2}px ${width / 2}px; font-size: 0px; background: ${f(options)}`)
-	console.log('%c ', `${consoleStyle}; padding: ${getPaddingFromAlign(width, height, horizontalAlign, verticalAlign)}; font-size: 0px; background: ${f(options)}`)
+	if (fullLine) {
+		console.log(`%c${' '.repeat(250)}`, `${consoleStyle}; padding: ${getPaddingFromAlign(0, height, horizontalAlign, verticalAlign)}; line-height: 0; background: ${f(options)}; background-size: contain; background-position: ${horizontalAlign} ${verticalAlign}; background-repeat: no-repeat;`)
+	} else {
+		console.log('%c ', `${consoleStyle}; padding: ${getPaddingFromAlign(width, height, horizontalAlign, verticalAlign)}; font-size: 0px; background: ${f(options)}`)
+	}
 }
 
 const metaFDebug = (f: Function) => (options: JsxToDataUriOptions) => {
